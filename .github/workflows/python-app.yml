@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # This specifies the operating system (Ubuntu)
+    runs-on: ubuntu-latest  # Specify the operating system (Ubuntu)
 
     steps:
       - name: Check out code
@@ -26,5 +26,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt  # Install dependencies listed in requirements.txt
 
-      - name: Run Python script
-        run: python your_script.py  # Replace 'your_script.py' with your Python file
+      - name: Install Flask
+        run: pip install Flask  # Install Flask if not in requirements.txt
+
+      - name: Run Flask app
+        run: |
+          nohup python your_script.py &  # Run Flask in the background (nohup prevents it from stopping)
+          sleep 10  # Wait for Flask to start (this may vary depending on your system)
+
+      - name: Test Flask app
+        run: |
+          curl http://127.0.0.1:5000/  # Test if Flask is running by making an HTTP request
