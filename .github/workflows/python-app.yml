@@ -10,16 +10,16 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # Specify the operating system (Ubuntu)
+    runs-on: ubuntu-latest  # Use Ubuntu for the GitHub Actions runner
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v3  # This checks out your code from the repository
+        uses: actions/checkout@v3  # Checkout the repository
 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'  # Specify the version of Python you want to use
+          python-version: '3.9'  # Use the specific version of Python
 
       - name: Install dependencies
         run: |
@@ -27,13 +27,13 @@ jobs:
           pip install -r requirements.txt  # Install dependencies listed in requirements.txt
 
       - name: Install Flask
-        run: pip install Flask  # Install Flask if not in requirements.txt
+        run: pip install Flask  # Install Flask if not already in requirements.txt
 
       - name: Run Flask app
         run: |
-          nohup python your_script.py &  # Run Flask in the background (nohup prevents it from stopping)
-          sleep 10  # Wait for Flask to start (this may vary depending on your system)
+          nohup python your_script.py --host=0.0.0.0 --port=5000 &  # Run Flask on all interfaces and port 5000
+          sleep 10  # Wait for Flask to start
 
       - name: Test Flask app
         run: |
-          curl http://127.0.0.1:5000/  # Test if Flask is running by making an HTTP request
+          curl http://127.0.0.1:5000/  # Test Flask app with curl
